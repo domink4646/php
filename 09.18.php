@@ -28,25 +28,23 @@
     $dobasok = [];
     $egymasHarom = false;
     $egymasOt = false;
-    $temp_Harom = 0;
-    $temp_Ot = 0;
+    $temp_szamlalo = 1;
 
     for ($i = 0; $i < 5; $i++) {
         $dobasok[] = random_int(0, 1); // 0 = fej, 1 = írás
     }
 
-    for ($i = 0; $i < 5; $i++) {
-        if ($dobasok[$i]) {
-            $temp_Harom++;
-            $temp_Ot++;
+    // Ellenőrizze az egymás után azonos dobásokat
+    for ($i = 1; $i < 5; $i++) {
+        if ($dobasok[$i] == $dobasok[$i - 1]) {
+            $temp_szamlalo++;
         } else {
-            $temp_Harom = 0;
-            $temp_Ot = 0;
+            $temp_szamlalo = 1;
         }
-        if ($temp_Harom >= 3) {
+        if ($temp_szamlalo >= 3) {
             $egymasHarom = true;
         }
-        if ($temp_Ot >= 5) {
+        if ($temp_szamlalo >= 5) {
             $egymasOt = true;
         }
     }
@@ -88,7 +86,53 @@
         $nyeremeny = "Kétszemélyes utazás";
     }
 
-    echo "<h2>Feladatok eredményei</h2>";
+    // Elől tesztelő ciklussal írd ki a páros számokat 1 és 50 között!
+    
+    $paros_Szamok = [];
+    $_counter = 1;
+
+    while ($_counter <= 50) {
+        if ($_counter % 2 == 0) {
+            $paros_Szamok[] = $_counter;
+        }
+        $_counter++;
+    }
+
+
+    // Hátul tesztelő ciklussal írd ki a páratlan számokat 1 és 50 között!
+    
+    $paratlan_Szamok = [];
+    $counter = 1;
+
+    do {
+        if ($counter % 2 != 0) {
+            $paratlan_Szamok[] = $counter;
+        }
+        $counter++;
+    } while ($counter <= 50);
+
+    // Írja ki a Fibonacci – sorozat első 50 elemét! (Az első két tag az 1-es, majd a következő tag mindig az előző két tag összege.)
+    
+    function fibonacci($n)
+    {
+        if ($n < 2) {
+            return 1;
+        }
+
+        $a = 1;
+        $b = 1;
+
+        for ($i = 2; $i <= $n; $i++) {
+            $temp = $a + $b;
+            $a = $b;
+            $b = $temp;
+        }
+
+        return $b;
+    }
+
+
+    echo "<h2>Feladatok</h2>";
     echo "<h3>1. Faktoriális</h3>";
     echo "<p>A véletlenszám: $szam</p>";
     echo "<p>$szam! = $factorial</p>";
@@ -100,6 +144,20 @@
     <h3>3. Kockadobás</h3>
     <p><?php echo $dobasSzoveg; ?></p>
     <p>Nyeremény: <?php echo $nyeremeny; ?></p>
+
+    <h3>4. Páros számok 1 és 50 között</h3>
+    <p><?php echo implode(", ", $paros_Szamok); ?></p>
+
+    <h3>5. Páratlan számok 1 és 50 között</h3>
+    <p><?php echo implode(", ", $paratlan_Szamok); ?></p>
+
+    <h3>6. Fibonacci sorozat első 50 eleme</h3>
+    <p>
+        <?php
+        for ($i = 0; $i < 50; $i++) {
+            echo fibonacci($i) . ", ";
+        }
+        ?>
 </body>
 
 </html>
